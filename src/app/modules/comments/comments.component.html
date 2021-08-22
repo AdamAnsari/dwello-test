@@ -1,0 +1,41 @@
+<ng-container *ngIf="data">
+  <div class="main-comment">
+    <div class="close-div">
+      <span (click)="close()">X Close</span>
+    </div>
+    <div class="blocks">
+      <div class="title-text">{{ data }}</div>
+    </div>
+    <div class="comment-input">
+      <textarea rows="5" cols="40" #commentInput> </textarea>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="getComments(commentInput.value)"
+      >
+        Add Comment
+      </button>
+    </div>
+    <div class="comments-block" *ngIf="displayComment">
+      <div class="comment-text">{{ displayComment }}</div>
+      <div class="reply-text">
+        <span (click)="openReply()">Reply</span>
+        <div *ngIf="replyFlag">
+          <textarea rows="5" cols="40" #replyInput> </textarea>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="getReply(replyInput.value)"
+          >
+            Reply
+          </button>
+        </div>
+        <ng-container *ngIf="displayReply">
+          <div *ngFor="let d of displayReply; let i = index">
+            {{ i + 1 }}: {{ d }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</ng-container>

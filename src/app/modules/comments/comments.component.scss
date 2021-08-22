@@ -1,0 +1,42 @@
+.main-comment {
+  width: 90%;
+  margin: 20px auto;
+  textarea {
+    width: 100%;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+  }
+  .close-div {
+    display: flex;
+    background-color: #000000;
+    color: #ffffff;
+    padding: 10px;
+    cursor: pointer;
+    span {
+      margin-left: auto;
+    }
+  }
+  .blocks {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    .title-text {
+      font-size: 20px;
+      font-weight: bold;
+      padding: 10px 0 10px 20px;
+    }
+  }
+  .comment-input {
+    margin: 20px 0;
+  }
+  .comments-block {
+    .reply-text {
+      margin-left: 20px;
+      font-size: 12px;
+      span {
+        opacity: 0.6;
+        cursor: pointer;
+      }
+    }
+  }
+}

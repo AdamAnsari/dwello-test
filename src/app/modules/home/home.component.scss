@@ -1,0 +1,26 @@
+.home-main {
+  height: 85vh;
+  overflow: auto;
+  width: 99%;
+  margin: 20px auto;
+  div {
+    margin: 20px 10px;
+  }
+}
+
+.blocks {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+  .title-text {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .comments-btn {
+    span:nth-child(1) {
+      margin-right: 10px;
+      opacity: 0.4;
+    }
+  }
+}
