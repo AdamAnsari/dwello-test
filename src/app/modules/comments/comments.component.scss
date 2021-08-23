@@ -1,6 +1,12 @@
 .main-comment {
   width: 90%;
   margin: 20px auto;
+  .main-comment-text {
+    margin: 10px;
+  }
+  .replies {
+    margin: 10px 0 0 20px;
+  }
   textarea {
     width: 100%;
     border: 1px solid lightgray;

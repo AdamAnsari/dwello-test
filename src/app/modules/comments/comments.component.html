@@ -16,6 +16,7 @@
         Add Comment
       </button>
     </div>
+
     <div class="comments-block" *ngIf="displayComment">
       <div class="comment-text">{{ displayComment }}</div>
       <div class="reply-text">
@@ -37,5 +38,14 @@
         </ng-container>
       </div>
     </div>
+
+    <ng-container *ngIf="mainComment">
+      <div class="main-comment-text">
+        <strong>Comment</strong>: {{ mainComment }}
+      </div>
+      <div class="replies" *ngFor="let d of commentApiData; let i = index">
+        <strong>Reply</strong>: {{ d }}
+      </div>
+    </ng-container>
   </div>
 </ng-container>

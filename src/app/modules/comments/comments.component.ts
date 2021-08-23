@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonServiceService } from 'src/app/services/common-service.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { RedditApiService } from 'src/app/services/reddit-api.service';
+import { title } from 'process';
 
 @Component({
   selector: 'app-comments',
@@ -11,6 +13,7 @@ import { Router } from '@angular/router';
 export class CommentsComponent implements OnInit {
   @ViewChild('commentInput') commentInput;
   @ViewChild('replyInput') replyInput;
+  subs0: Subscription;
   subs1: Subscription;
   subs2: Subscription;
   subs3: Subscription;
@@ -19,17 +22,43 @@ export class CommentsComponent implements OnInit {
   displayComment: string;
   replyFlag: boolean = false;
   displayReply: any[] = [];
+  parmalink: string;
+  resData: any[] = [];
+  commentApiData: any[] = [];
+  mainComment: string;
 
-  constructor(private commS: CommonServiceService, private router: Router) {
+  constructor(
+    private commS: CommonServiceService,
+    private router: Router,
+    private redditApiService: RedditApiService
+  ) {
     if (this.router.getCurrentNavigation().extras.state) {
-      this.pathIndex = this.router.getCurrentNavigation().extras.state.example;
+      this.pathIndex = this.router.getCurrentNavigation().extras.state.id;
+      this.parmalink = this.router.getCurrentNavigation().extras.state.parmalink;
     }
   }
 
   ngOnInit(): void {
-    this.subs1 = this.commS.postsData.subscribe((res) => {
+    this.subs0 = this.redditApiService
+      .getCommentData(this.parmalink)
+      .subscribe((res: any) => {
+        console.log(res);
+        this.resData = [];
+        this.commentApiData = [];
+        this.resData = { ...res };
+        this.resData[1].data.children.forEach((element, index) => {
+          if (element.data.body) {
+            this.commentApiData.push(element.data.body);
+          }
+        });
+        this.mainComment = this.commentApiData[0];
+        this.commentApiData.shift();
+        console.log(this.commentApiData);
+      });
+
+    this.subs1 = this.commS.postsData.subscribe((res: any) => {
       if (this.pathIndex) {
-        this.data = res[this.pathIndex - 1];
+        this.data = res[this.pathIndex - 1].title;
       } else {
         this.router.navigate(['/posts']);
       }
@@ -39,7 +68,7 @@ export class CommentsComponent implements OnInit {
 
   getComments(value) {
     this.commS.getComment(value);
-    this.subs2 = this.commS.commentData.subscribe((res) => {
+    this.subs2 = this.commS.commentData.subscribe((res: any) => {
       console.log(res);
       if (res.trim().length > 0) {
         this.displayComment = res;
@@ -51,7 +80,7 @@ export class CommentsComponent implements OnInit {
   getReply(value) {
     this.replyFlag = false;
     this.commS.getReply(value);
-    this.subs3 = this.commS.replyData.subscribe((res) => {
+    this.subs3 = this.commS.replyData.subscribe((res: any) => {
       console.log(res);
       if (res.trim().length > 0) {
         this.displayReply.push(res);
@@ -70,6 +99,7 @@ export class CommentsComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.subs0?.unsubscribe();
     this.subs1?.unsubscribe();
     this.subs2?.unsubscribe();
     this.subs3?.unsubscribe();

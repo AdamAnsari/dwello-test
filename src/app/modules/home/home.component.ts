@@ -5,6 +5,7 @@ import { CommonServiceService } from 'src/app/services/common-service.service';
 
 interface posts {
   title: string;
+  permalink: string;
 }
 @Component({
   selector: 'app-home',
@@ -14,6 +15,7 @@ interface posts {
 export class HomeComponent implements OnInit {
   content: any;
   data: posts[] = [];
+  dataObj: any = {};
 
   constructor(
     private redditApiService: RedditApiService,
@@ -28,8 +30,14 @@ export class HomeComponent implements OnInit {
   getData() {
     this.redditApiService.getData().subscribe((res: any) => {
       this.content = { ...res };
+      console.log(this.content);
       this.content.data.children.forEach((element, index) => {
-        this.data.push(element.data.title);
+        this.dataObj = {
+          title: element.data.title,
+          permalink: element.data.permalink,
+        };
+        this.data.push(this.dataObj);
+        this.dataObj = {};
       });
       console.log(this.data);
       this.commS.getPostData(this.data);
@@ -38,8 +46,11 @@ export class HomeComponent implements OnInit {
 
   customEvent(event, index) {
     console.log(event, index);
+    let commentLink = this.data[index - 1].permalink;
     this.router
-      .navigate(['/posts/details/' + index], { state: { example: index } })
+      .navigate(['/posts/details/' + index], {
+        state: { id: index, parmalink: commentLink },
+      })
       .then((success) => console.log('navigation success?', success))
       .catch(console.error);
   }

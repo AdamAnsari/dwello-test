@@ -10,4 +10,8 @@ export class RedditApiService {
   getData() {
     return this.http.get('https://www.reddit.com/.json');
   }
+
+  getCommentData(data) {
+    return this.http.get(`https://www.reddit.com/${data}/.json`);
+  }
 }
